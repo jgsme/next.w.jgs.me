@@ -59,18 +59,6 @@ describe("+data", () => {
     });
   });
 
-  it("出典を safeHref 経由のリンクにする", async () => {
-    expect((await data(ctx)).source).toEqual({
-      href: "https://example.com/article",
-      label: "元記事",
-    });
-  });
-
-  it("javascript: の出典はリンクにしない", async () => {
-    rows = [row({ sourceURL: "javascript:alert(1)" })];
-    expect((await data(ctx)).source).toBeNull();
-  });
-
   // 行は消えうる (DELETE /api/images/:id)。消えた後も 200 を返すと
   // unfurl 側に空のカードが焼かれる。
   it("行が無ければ 404 を投げる", async () => {

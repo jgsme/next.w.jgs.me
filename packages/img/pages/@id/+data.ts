@@ -4,7 +4,6 @@ import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 import { sharedImages } from "@jigsaw/db";
 import { MEDIA_BASE_URL } from "../../src/config";
-import { sourceLink, type SourceLink } from "../../src/page";
 
 type Context = PageContextServer & {
   env: { DB: D1Database };
@@ -18,7 +17,6 @@ export type ImageData = {
   width: number | null;
   height: number | null;
   created: string;
-  source: SourceLink | null;
 };
 
 const data = async (c: Context): Promise<ImageData> => {
@@ -41,7 +39,6 @@ const data = async (c: Context): Promise<ImageData> => {
     width: row.width,
     height: row.height,
     created: row.created,
-    source: sourceLink(row.sourceURL, row.sourceTitle),
   };
 };
 
