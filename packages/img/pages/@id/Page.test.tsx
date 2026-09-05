@@ -12,7 +12,6 @@ function data(over: Partial<ImageData> = {}): ImageData {
     width: 1200,
     height: 800,
     created: "2026-09-04 12:00:00",
-    source: { href: "https://example.com/article", label: "元記事" },
     ...over,
   };
 }
@@ -42,27 +41,10 @@ describe("+Page", () => {
     expect(html).not.toContain("height=");
   });
 
-  it("出典をリンクにする", () => {
+  // 出典の表示をやめた結果、他所由来の文字列がページに出なくなった。
+  it("外部へのリンクを一つも出さない", () => {
     const html = render(data(), () => <Page />);
-    expect(html).toContain('href="https://example.com/article"');
-    expect(html).toContain("元記事");
-  });
-
-  it("出典が無ければリンクを出さない", () => {
-    const html = render(data({ source: null }), () => <Page />);
     expect(html).not.toContain("<a ");
-    expect(html).not.toContain("from ");
-  });
-
-  // 他所のページの題がそのまま入る。テンプレートリテラルで組んでいた頃は
-  // 手書きの esc() が要ったが、JSX にしたのはここを React に任せるため。
-  it("題の山括弧をエスケープする", () => {
-    const html = render(
-      data({ source: { href: "https://example.com/x", label: "<script>x" } }),
-      () => <Page />,
-    );
-    expect(html).not.toContain("<script>x");
-    expect(html).toContain("&lt;script&gt;x");
   });
 });
 

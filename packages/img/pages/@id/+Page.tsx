@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       {/* alt は空。装飾ではなく本体だが、説明できる文言をこちらは持っていない。
-          出典の題は下のリンクで読めるので、そこを重ねても読み上げが冗長になるだけ。 */}
+          出典の題は他所が付けた題で、画像の中身を説明しているとは限らない。 */}
       <img
         src={d.direct}
         alt=""
@@ -15,15 +15,6 @@ export default function Page() {
         height={d.height ?? undefined}
         className="w-full h-auto rounded"
       />
-
-      {d.source && (
-        <p className="mt-4">
-          <span className="text-fg-subtle">from </span>
-          <a href={d.source.href} className="text-link">
-            {d.source.label}
-          </a>
-        </p>
-      )}
 
       <p className="mt-4 text-sm text-fg-subtle">
         {d.created}
