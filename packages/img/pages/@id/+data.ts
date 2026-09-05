@@ -3,7 +3,6 @@ import { render } from "vike/abort";
 import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 import { sharedImages } from "@jigsaw/db";
-import { useConfig } from "vike-react/useConfig";
 import { MEDIA_BASE_URL } from "../../src/config";
 import { sourceLink, type SourceLink } from "../../src/page";
 
@@ -23,7 +22,6 @@ export type ImageData = {
 };
 
 const data = async (c: Context): Promise<ImageData> => {
-  const config = useConfig();
   const id = c.routeParams.id;
 
   const [row] = await drizzle(c.env.DB)
@@ -35,9 +33,6 @@ const data = async (c: Context): Promise<ImageData> => {
   // 行は消えうる (DELETE /api/images/:id)。消えた後も 200 を返すと
   // unfurl 側に空のカードが焼かれる。
   if (!row) throw render(404);
-
-  // 題が無い画像もある。og:title を空にすると unfurl のカードが無題になる。
-  config({ title: row.sourceTitle ?? "jgs.me" });
 
   return {
     id: row.id,

@@ -5,8 +5,9 @@ import { Layout } from "./Layout";
 export const config = {
   extends: [vikeReact],
   Layout,
-  // 個別ページは +data で画像ごとの題に差し替える。ここは 404 などの控え。
-  title: "jgs.me",
+  // 画像ごとの題は付けない。unfurl のカードは og:image が本体で、題は
+  // どこの画像かが分かれば足りる。
+  title: "i.jgs.me",
   lang: "ja",
   // このページに対話的な要素は一つも無い。既定のままだと React の実行時が
   // まるごとクライアントに載る (283KB)。切ると script タグが 1 つも出なくなり、
