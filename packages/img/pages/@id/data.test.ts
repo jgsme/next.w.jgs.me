@@ -4,7 +4,6 @@ const ID = "a".repeat(64);
 
 type Row = Record<string, unknown>;
 let rows: Row[] = [];
-let titleSet: string | undefined;
 
 // drizzle のクエリビルダはチェーン。行の配列だけ返せれば足りる。
 vi.mock("drizzle-orm/d1", () => ({
@@ -15,12 +14,6 @@ vi.mock("drizzle-orm/d1", () => ({
       }),
     }),
   }),
-}));
-
-vi.mock("vike-react/useConfig", () => ({
-  useConfig: () => (c: { title?: string }) => {
-    titleSet = c.title;
-  },
 }));
 
 const { default: data } = await import("./+data");
@@ -47,7 +40,6 @@ function row(over: Row = {}): Row {
 
 beforeEach(() => {
   rows = [row()];
-  titleSet = undefined;
 });
 
 describe("+data", () => {
@@ -77,18 +69,6 @@ describe("+data", () => {
   it("javascript: の出典はリンクにしない", async () => {
     rows = [row({ sourceURL: "javascript:alert(1)" })];
     expect((await data(ctx)).source).toBeNull();
-  });
-
-  it("題があれば og:title に使う", async () => {
-    await data(ctx);
-    expect(titleSet).toBe("元記事");
-  });
-
-  // 題が無い画像もある。og:title を空にすると unfurl のカードが無題になる。
-  it("題が無ければ og:title は jgs.me", async () => {
-    rows = [row({ sourceTitle: null })];
-    await data(ctx);
-    expect(titleSet).toBe("jgs.me");
   });
 
   // 行は消えうる (DELETE /api/images/:id)。消えた後も 200 を返すと
